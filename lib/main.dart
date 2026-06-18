@@ -4,11 +4,18 @@ void main() {
   runApp(const HabitTrackerApp());
 }
 
-class HabitTrackerApp extends StatelessWidget {
+class HabitTrackerApp extends StatefulWidget{
   const HabitTrackerApp({super.key});
-
+  @override
+  State<HabitTrackerApp> createState()=>_HabitTrackerAppState();
+}
+class _HabitTrackerAppState extends State<HabitTrackerApp> {
+  bool readCompleted=false;
+  bool waterCompleted=false;
+  bool exerciseCompleted=false;
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Habit Tracker',
       debugShowCheckedModeBanner:false,
@@ -86,8 +93,12 @@ class HabitTrackerApp extends StatelessWidget {
                 ],
               ),
               Checkbox(
-                value:false,
-                onChanged:null,
+                value: readCompleted,
+                onChanged: ( value) {
+                  setState(() {
+                    readCompleted = value!;
+                  });
+                },
               ),
             ],
           ),
@@ -126,8 +137,12 @@ Container(
                 ],
               ),
               Checkbox(
-                value:false,
-                onChanged:null,
+                value: waterCompleted,
+                onChanged: (value) {
+                  setState(() {
+                    waterCompleted = value!;
+                  });
+                },
               ),
             ],
           ),
@@ -166,8 +181,12 @@ Container(
                 ],
               ),
               Checkbox(
-                value:false,
-                onChanged:null,
+                value: exerciseCompleted,
+                onChanged: ( value) {
+                  setState(() {
+                    exerciseCompleted = value!;
+                  });
+                },
               ),
             ],
           ),
@@ -177,5 +196,5 @@ Container(
   ),
 ),
     );
-  }
+    }
 }
