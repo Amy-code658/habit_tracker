@@ -10,9 +10,29 @@ class HabitTrackerApp extends StatefulWidget{
   State<HabitTrackerApp> createState()=>_HabitTrackerAppState();
 }
 class _HabitTrackerAppState extends State<HabitTrackerApp> {
-  bool readCompleted=false;
-  bool waterCompleted=false;
-  bool exerciseCompleted=false;
+  List<Map<String, dynamic>> habits = [
+  {
+    'title': 'Read 20 Pages',
+    'completed': false,
+    'icon': Icons.menu_book,
+  },
+  {
+    'title': 'Drink Water',
+    'completed': false,
+    'icon': Icons.water_drop,
+  },
+  {
+    'title': 'Exercise',
+    'completed': false,
+    'icon': Icons.fitness_center,
+  },
+  {
+  'title': 'Meditate',
+  'completed': false,
+  'icon': Icons.self_improvement,
+}
+];
+
   @override
   Widget build(BuildContext context) {
 
@@ -60,137 +80,67 @@ class _HabitTrackerAppState extends State<HabitTrackerApp> {
           ),
         ),
         const SizedBox(height:30),
-        Container(
-          padding:const EdgeInsets.all(16),
-          decoration:BoxDecoration(
-            color:Colors.white,
-            borderRadius:BorderRadius.circular(20),
-            boxShadow:[
-              BoxShadow(
-                blurRadius:10,
-                offset:Offset(0,4),
-                color:Colors.black12,
+       ...habits.asMap().entries.map((entry) {
+  int index = entry.key;
+  Map<String, dynamic> habit = entry.value;
+
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+
+    child: Container(
+      padding: const EdgeInsets.all(16),
+
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 10,
+            offset: Offset(0, 4),
+            color: Colors.black12,
+          ),
+        ],
+      ),
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+        children: [
+
+          Row(
+            children: [
+
+              Icon(
+                habit['icon'],
+                size: 28,
+              ),
+
+              const SizedBox(width: 12),
+
+              Text(
+                habit['title'],
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
-          child:Row(
-            mainAxisAlignment:MainAxisAlignment.spaceBetween,
-            children:[
-              Row(
-                children:const[
-                  Icon(
-                    Icons.menu_book,
-                    size:28,
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    "Read 20 pages",
-                    style:TextStyle(
-                      fontSize:18,
-                      fontWeight:FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              Checkbox(
-                value: readCompleted,
-                onChanged: ( value) {
-                  setState(() {
-                    readCompleted = value!;
-                  });
-                },
-              ),
-            ],
+
+          Checkbox(
+            value: habit['completed'],
+
+            onChanged: (value) {
+              setState(() {
+                habits[index]['completed'] = value!;
+              });
+            },
           ),
-        ),
-const SizedBox(height:20),
-Container(
-          padding:const EdgeInsets.all(16),
-          decoration:BoxDecoration(
-            color:Colors.white,
-            borderRadius:BorderRadius.circular(20),
-            boxShadow:[
-              BoxShadow(
-                blurRadius:10,
-                offset:Offset(0,4),
-                color:Colors.black12,
-              ),
-            ],
-          ),
-          child:Row(
-            mainAxisAlignment:MainAxisAlignment.spaceBetween,
-            children:[
-              Row(
-                children:const[
-                  Icon(
-                    Icons.water_drop,
-                    size:28,
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    "Drink water",
-                    style:TextStyle(
-                      fontSize:18,
-                      fontWeight:FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              Checkbox(
-                value: waterCompleted,
-                onChanged: (value) {
-                  setState(() {
-                    waterCompleted = value!;
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height:20),
-        Container(
-          padding:const EdgeInsets.all(16),
-          decoration:BoxDecoration(
-            color:Colors.white,
-            borderRadius:BorderRadius.circular(20),
-            boxShadow:[
-              BoxShadow(
-                blurRadius:10,
-                offset:Offset(0,4),
-                color:Colors.black12,
-              ),
-            ],
-          ),
-          child:Row(
-            mainAxisAlignment:MainAxisAlignment.spaceBetween,
-            children:[
-              Row(
-                children:const[
-                  Icon(
-                    Icons.fitness_center,
-                    size:28,
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    "Exercise",
-                    style:TextStyle(
-                      fontSize:18,
-                      fontWeight:FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              Checkbox(
-                value: exerciseCompleted,
-                onChanged: ( value) {
-                  setState(() {
-                    exerciseCompleted = value!;
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+        ],
+      ),
+    ),
+  );
+}),
       ],
     ),
   ),
