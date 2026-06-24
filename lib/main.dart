@@ -94,6 +94,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    int completedHabits = habits
+    .where((habit) => habit['completed'] == true)
+    .length;
+
+double progress = habits.isEmpty
+    ? 0
+    : completedHabits / habits.length;
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
 
@@ -136,6 +143,39 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(height: 30),
+              Container(
+  padding: const EdgeInsets.all(20),
+
+  decoration: BoxDecoration(
+    color: Colors.purple.shade100,
+    borderRadius: BorderRadius.circular(20),
+  ),
+
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+
+    children: [
+
+      Text(
+        '$completedHabits / ${habits.length} Habits Completed',
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+
+      const SizedBox(height: 15),
+
+      LinearProgressIndicator(
+        value: progress,
+        minHeight: 10,
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ],
+  ),
+),
+
+const SizedBox(height: 25),
 
               ...habits.asMap().entries.map((entry) {
                 int index = entry.key;
