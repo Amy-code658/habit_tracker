@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/habit_card.dart';
 
 void main() {
   runApp(const HabitTrackerApp());
@@ -182,68 +183,32 @@ const SizedBox(height: 25),
                 Map<String, dynamic> habit = entry.value;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+  padding: const EdgeInsets.only(bottom: 16),
 
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
+  child: HabitCard(
+    title: habit['title'],
+    icon: habit['icon'],
+    completed: habit['completed'],
 
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                          color: Colors.black12,
-                        ),
-                      ],
-                    ),
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              habit['icon'],
-                              size: 28,
-                            ),
-
-                            const SizedBox(width: 12),
-
-                            Text(
-                              habit['title'],
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Checkbox(
-                          value: habit['completed'],
-                          onChanged: (value) {
-                            setState(() {
-                              habits[index]['completed'] = value!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+    onChanged: (value) {
+      setState(() {
+        habits[index]['completed'] = value!;
+      });
+    },
+  ),
+  
                 );
+                
               }),
-            ],
-          ),
-        ),
-      ),
+ ],
+ ),
+ ),
+ ),
+ floatingActionButton: FloatingActionButton(
+    onPressed: showAddHabitDialog,
+    child: const Icon(Icons.add),
+  ),
+);
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: showAddHabitDialog,
-        child: const Icon(Icons.add),
-      ),
-    );
   }
 }
