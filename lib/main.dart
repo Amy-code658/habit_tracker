@@ -92,7 +92,13 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+final Color primaryPurple = const Color(0xFF7E57C2);
 
+final Color softPurple = const Color(0xFFB39DDB);
+
+final Color lightPurple = const Color(0xFFEDE7F6);
+
+final Color milkyWhite = const Color(0xFFFAF9FF);
   @override
   Widget build(BuildContext context) {
     int completedHabits = habits
@@ -103,7 +109,7 @@ double progress = habits.isEmpty
     ? 0
     : completedHabits / habits.length;
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor:milkyWhite,
 
       body: SingleChildScrollView(
         child: Padding(
@@ -115,13 +121,14 @@ double progress = habits.isEmpty
             children: [
               const SizedBox(height: 20),
 
-              const Text(
-                'Habit Tracker',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+             Text(
+  'Habit Tracker',
+  style: TextStyle(
+    fontSize: 34,
+    fontWeight: FontWeight.bold,
+    color: primaryPurple,
+  ),
+),
 
               const SizedBox(height: 12),
 
@@ -135,22 +142,31 @@ double progress = habits.isEmpty
 
               const SizedBox(height: 20),
 
-              const Text(
-                'Start building better habits today.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.blue,
-                ),
-              ),
+              Text(
+  'Start building better habits today.',
+  style: TextStyle(
+    fontSize: 16,
+    color: softPurple,
+  ),
+),
 
               const SizedBox(height: 30),
               Container(
   padding: const EdgeInsets.all(20),
 
-  decoration: BoxDecoration(
-    color: Colors.purple.shade100,
-    borderRadius: BorderRadius.circular(20),
-  ),
+ decoration: BoxDecoration(
+  color: lightPurple,
+
+  borderRadius: BorderRadius.circular(24),
+
+  boxShadow: const [
+    BoxShadow(
+      color: Colors.black12,
+      blurRadius: 10,
+      offset: Offset(0, 4),
+    ),
+  ],
+),
 
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,20 +174,27 @@ double progress = habits.isEmpty
     children: [
 
       Text(
-        '$completedHabits / ${habits.length} Habits Completed',
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+  '$completedHabits / ${habits.length} Habits Completed',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: primaryPurple,
+  ),
+),
 
       const SizedBox(height: 15),
 
       LinearProgressIndicator(
-        value: progress,
-        minHeight: 10,
-        borderRadius: BorderRadius.circular(10),
-      ),
+  value: progress,
+  minHeight: 10,
+  borderRadius: BorderRadius.circular(24),
+
+  valueColor: AlwaysStoppedAnimation(
+    primaryPurple,
+  ),
+
+  backgroundColor: Colors.white,
+),
     ],
   ),
 ),
@@ -196,18 +219,22 @@ const SizedBox(height: 25),
       });
     },
   ),
-  
+
                 );
-                
               }),
  ],
  ),
  ),
  ),
  floatingActionButton: FloatingActionButton(
-    onPressed: showAddHabitDialog,
-    child: const Icon(Icons.add),
+  backgroundColor: primaryPurple,
+  elevation: 8,
+  onPressed: showAddHabitDialog,
+  child: const Icon(
+    Icons.add,
+    color: Colors.white,
   ),
+),
 );
 
   }
