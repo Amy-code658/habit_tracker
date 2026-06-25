@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/habit_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 void main() {
   runApp(const HabitTrackerApp());
@@ -9,6 +11,7 @@ class HabitTrackerApp extends StatelessWidget {
   const HabitTrackerApp({super.key});
 
   @override
+  
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -46,8 +49,50 @@ class _HomePageState extends State<HomePage> {
       'completed': false,
       'icon': Icons.self_improvement,
     },
-  ];
+  ]; 
+  @override
+void initState() {
+  super.initState();
+  loadHabits();
+}
 
+Future<void> saveHabits() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  String encodedData = jsonEncode(
+    habits.map((habit) => {
+      'title': habit['title'],
+      'completed': habit['completed'],
+    }).toList(),
+  );
+
+  await prefs.setString(
+    'habits',
+    encodedData,
+  );
+}
+
+Future<void> loadHabits() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  String? savedData =
+      prefs.getString('habits');
+
+  if (savedData != null) {
+    List decoded =
+        jsonDecode(savedData);
+
+    setState(() {
+      habits = decoded.map((habit) {
+        return {
+          'title': habit['title'],
+          'completed': habit['completed'],
+          'icon': Icons.task_alt,
+        };
+      }).toList();
+    });
+  }
+}
   final TextEditingController habitController = TextEditingController();
 
 void showDeleteDialog(int index) {
@@ -76,8 +121,10 @@ void showDeleteDialog(int index) {
             onPressed: () {
 
               setState(() {
-                habits.removeAt(index);
-              });
+  habits.removeAt(index);
+});
+
+saveHabits();
 
               Navigator.pop(context);
             },
@@ -133,7 +180,7 @@ void showDeleteDialog(int index) {
               'icon': Icons.task_alt,
             });
           });
-
+saveHabits();
           habitController.clear();
         }
 
@@ -352,13 +399,14 @@ const SizedBox(height: 25),
 
         child: HabitCard(
           title: habit['title'],
-          icon: habit['icon'],
+          icon: habit['icon'] ?? Icons.task_alt,
           completed: habit['completed'],
 
           onChanged: (value) {
             setState(() {
               habits[index]['completed'] = value!;
             });
+            saveHabits();
           },
 
           onDelete: () {
@@ -383,6 +431,5 @@ const SizedBox(height: 25),
   ),
 ),
 );
-
   }
 }
