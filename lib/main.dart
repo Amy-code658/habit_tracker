@@ -50,6 +50,45 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController habitController = TextEditingController();
 
+void showDeleteDialog(int index) {
+  showDialog(
+    context: context,
+
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Delete Habit'),
+
+        content: Text(
+          'Are you sure you want to delete "${habits[index]['title']}"?',
+        ),
+
+        actions: [
+
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+
+            child: const Text('Cancel'),
+          ),
+
+          ElevatedButton(
+            onPressed: () {
+
+              setState(() {
+                habits.removeAt(index);
+              });
+
+              Navigator.pop(context);
+            },
+
+            child: const Text('Delete'),
+          ),
+        ],
+      );
+    },
+  );
+}
   void showAddHabitDialog() {
     showDialog(
       context: context,
@@ -218,6 +257,9 @@ const SizedBox(height: 25),
         habits[index]['completed'] = value!;
       });
     },
+    onDelete: () {
+  showDeleteDialog(index);
+},
   ),
 
                 );

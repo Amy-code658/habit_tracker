@@ -5,6 +5,7 @@ class HabitCard extends StatelessWidget {
   final IconData icon;
   final bool completed;
   final ValueChanged<bool?> onChanged;
+  final VoidCallback onDelete;
 
   const HabitCard({
     super.key,
@@ -12,6 +13,7 @@ class HabitCard extends StatelessWidget {
     required this.icon,
     required this.completed,
     required this.onChanged,
+    required this.onDelete,
   });
 
   @override
@@ -54,10 +56,24 @@ class HabitCard extends StatelessWidget {
             ],
           ),
 
-          Checkbox(
-            value: completed,
-            onChanged: onChanged,
-          ),
+          Row(
+  children: [
+
+    IconButton(
+      onPressed: onDelete,
+
+      icon: const Icon(
+        Icons.delete_outline,
+        color: Colors.redAccent,
+      ),
+    ),
+
+    Checkbox(
+      value: completed,
+      onChanged: onChanged,
+    ),
+  ],
+),
         ],
       ),
     );
