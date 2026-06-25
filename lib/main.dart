@@ -93,44 +93,60 @@ void showDeleteDialog(int index) {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Add New Habit'),
-          content: TextField(
-            controller: habitController,
-            decoration: const InputDecoration(
-              hintText: 'Enter habit name',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (habitController.text.trim().isNotEmpty) {
-                  setState(() {
-                    habits.add({
-                      'title': habitController.text.trim(),
-                      'completed': false,
-                      'icon': Icons.task_alt,
-                    });
-                  });
+       return AlertDialog(
+  title: Text(
+    '✨ Add New Habit',
+    style: TextStyle(
+      color: primaryPurple,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
 
-                  habitController.clear();
-                }
+  content: TextField(
+    controller: habitController,
+    decoration: InputDecoration(
+      hintText: 'Enter habit name',
+      filled: true,
+      fillColor: lightPurple,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+    ),
+  ),
 
-                Navigator.pop(context);
-              },
-              child: const Text('Add'),
-            ),
-          ],
-        );
+  actions: [
+    TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: const Text('Cancel'),
+    ),
+
+    ElevatedButton(
+      onPressed: () {
+        if (habitController.text.trim().isNotEmpty) {
+          setState(() {
+            habits.add({
+              'title': habitController.text.trim(),
+              'completed': false,
+              'icon': Icons.task_alt,
+            });
+          });
+
+          habitController.clear();
+        }
+
+        Navigator.pop(context);
+      },
+      child: const Text('Add'),
+    ),
+  ],
+);
       },
     );
-  }
+  } 
+         
 final Color primaryPurple = const Color(0xFF7E57C2);
 
 final Color softPurple = const Color(0xFFB39DDB);
@@ -188,8 +204,54 @@ double progress = habits.isEmpty
     color: softPurple,
   ),
 ),
+Container(
+  width: double.infinity,
 
-              const SizedBox(height: 30),
+  padding: const EdgeInsets.all(20),
+
+  decoration: BoxDecoration(
+    color: Colors.white,
+
+    borderRadius: BorderRadius.circular(24),
+
+    boxShadow: const [
+      BoxShadow(
+        color: Colors.black12,
+        blurRadius: 10,
+        offset: Offset(0, 4),
+      ),
+    ],
+  ),
+
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+
+    children: [
+
+      Text(
+        '✨ Daily Motivation',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: primaryPurple,
+        ),
+      ),
+
+      const SizedBox(height: 10),
+
+      const Text(
+        'Success is the sum of small efforts repeated day after day.',
+        style: TextStyle(
+          fontSize: 15,
+          height: 1.5,
+        ),
+      ),
+    ],
+  ),
+),
+
+const SizedBox(height: 25),
+              
               Container(
   padding: const EdgeInsets.all(20),
 
@@ -240,34 +302,77 @@ double progress = habits.isEmpty
 
 const SizedBox(height: 25),
 
-              ...habits.asMap().entries.map((entry) {
-                int index = entry.key;
-                Map<String, dynamic> habit = entry.value;
+              habits.isEmpty
 
-                return Padding(
-  padding: const EdgeInsets.only(bottom: 16),
+? Center(
+    child: Padding(
+      padding: const EdgeInsets.only(top: 40),
 
-  child: HabitCard(
-    title: habit['title'],
-    icon: habit['icon'],
-    completed: habit['completed'],
+      child: Column(
+        children: [
 
-    onChanged: (value) {
-      setState(() {
-        habits[index]['completed'] = value!;
-      });
-    },
-    onDelete: () {
-  showDeleteDialog(index);
-},
+          Icon(
+            Icons.self_improvement,
+            size: 70,
+            color: softPurple,
+          ),
+
+          const SizedBox(height: 15),
+
+          Text(
+            'No habits yet',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: primaryPurple,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(
+            'Tap + to create your first habit.',
+            style: TextStyle(
+              color: softPurple,
+            ),
+          ),
+        ],
+      ),
+    ),
+  )
+
+: Column(
+    children: habits.asMap().entries.map((entry) {
+
+      int index = entry.key;
+      Map<String, dynamic> habit = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+
+        child: HabitCard(
+          title: habit['title'],
+          icon: habit['icon'],
+          completed: habit['completed'],
+
+          onChanged: (value) {
+            setState(() {
+              habits[index]['completed'] = value!;
+            });
+          },
+
+          onDelete: () {
+            showDeleteDialog(index);
+          },
+        ),
+      );
+    }).toList(),
   ),
 
-                );
-              }),
- ],
- ),
- ),
- ),
+            ],
+          ),
+        ),
+      ),
  floatingActionButton: FloatingActionButton(
   backgroundColor: primaryPurple,
   elevation: 8,
