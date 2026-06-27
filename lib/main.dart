@@ -33,21 +33,25 @@ class _HomePageState extends State<HomePage> {
       'title': 'Read 20 Pages',
       'completed': false,
       'icon': Icons.menu_book,
+      'streak':0,
     },
     {
       'title': 'Drink Water',
       'completed': false,
       'icon': Icons.water_drop,
+      'streak':0,
     },
     {
       'title': 'Exercise',
       'completed': false,
       'icon': Icons.fitness_center,
+      'streak':0,
     },
     {
       'title': 'Meditate',
       'completed': false,
       'icon': Icons.self_improvement,
+      'streak':0,
     },
   ]; 
   @override
@@ -63,6 +67,7 @@ Future<void> saveHabits() async {
     habits.map((habit) => {
       'title': habit['title'],
       'completed': habit['completed'],
+      'streak': habit['streak'],
     }).toList(),
   );
 
@@ -88,6 +93,7 @@ Future<void> loadHabits() async {
           'title': habit['title'],
           'completed': habit['completed'],
           'icon': Icons.task_alt,
+          'streak': habit['streak'],
         };
       }).toList();
     });
@@ -178,6 +184,7 @@ saveHabits();
               'title': habitController.text.trim(),
               'completed': false,
               'icon': Icons.task_alt,
+              'streak': 0,
             });
           });
 saveHabits();
@@ -401,11 +408,15 @@ const SizedBox(height: 25),
           title: habit['title'],
           icon: habit['icon'] ?? Icons.task_alt,
           completed: habit['completed'],
+          streak: habit['streak'],
 
           onChanged: (value) {
             setState(() {
               habits[index]['completed'] = value!;
-            });
+
+if (value == true) {
+  habits[index]['streak']++;
+}});
             saveHabits();
           },
 

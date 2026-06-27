@@ -6,6 +6,7 @@ class HabitCard extends StatelessWidget {
   final bool completed;
   final ValueChanged<bool?> onChanged;
   final VoidCallback onDelete;
+  final int streak;
 
   const HabitCard({
     super.key,
@@ -14,6 +15,7 @@ class HabitCard extends StatelessWidget {
     required this.completed,
     required this.onChanged,
     required this.onDelete,
+    required this.streak,
   });
 
   @override
@@ -46,13 +48,29 @@ class HabitCard extends StatelessWidget {
 
               const SizedBox(width: 12),
 
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+
+    Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+
+    const SizedBox(height: 4),
+
+    Text(
+      "🔥 Streak: $streak day${streak == 1 ? "" : "s"}",
+      style: TextStyle(
+        color: Colors.orange.shade700,
+        fontSize: 14,
+      ),
+    ),
+  ],
+)
             ],
           ),
 
