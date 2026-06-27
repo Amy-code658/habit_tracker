@@ -34,24 +34,28 @@ class _HomePageState extends State<HomePage> {
       'completed': false,
       'icon': Icons.menu_book,
       'streak':0,
+      'lastCompletedDate':null,
     },
     {
       'title': 'Drink Water',
       'completed': false,
       'icon': Icons.water_drop,
       'streak':0,
+      'lastCompletedDate':null,
     },
     {
       'title': 'Exercise',
       'completed': false,
       'icon': Icons.fitness_center,
       'streak':0,
+      'lastCompletedDate':null,
     },
     {
       'title': 'Meditate',
       'completed': false,
       'icon': Icons.self_improvement,
       'streak':0,
+      'lastCompletedDate':null,
     },
   ]; 
   @override
@@ -68,6 +72,7 @@ Future<void> saveHabits() async {
       'title': habit['title'],
       'completed': habit['completed'],
       'streak': habit['streak'],
+      'lastCompletedDate': habit['lastCompletedDate'],
     }).toList(),
   );
 
@@ -94,6 +99,7 @@ Future<void> loadHabits() async {
           'completed': habit['completed'],
           'icon': Icons.task_alt,
           'streak': habit['streak'],
+          'lastCompletedDate': habit['lastCompletedDate'],
         };
       }).toList();
     });
@@ -185,6 +191,7 @@ saveHabits();
               'completed': false,
               'icon': Icons.task_alt,
               'streak': 0,
+              'lastCompletedDate': null,
             });
           });
 saveHabits();
@@ -411,12 +418,20 @@ const SizedBox(height: 25),
           streak: habit['streak'],
 
           onChanged: (value) {
-            setState(() {
-              habits[index]['completed'] = value!;
+  String today = DateTime.now().toIso8601String().split('T')[0];
+  String? lastCompleted = habits[index]['lastCompletedDate'];
 
-if (value == true) {
-  habits[index]['streak']++;
-}});
+  setState(() {
+    habits[index]['completed'] = value!;
+
+    if (value == true) {
+      if (lastCompleted != today) {
+        habits[index]['streak']++;
+        habits[index]['lastCompletedDate'] = today;
+      }
+    }
+  });
+
             saveHabits();
           },
 
